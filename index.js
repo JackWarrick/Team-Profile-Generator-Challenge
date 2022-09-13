@@ -9,18 +9,70 @@ const createHTML = inquirer
     .prompt([
         {
             type: 'list',
-            message: 'Is the team member an Employee, Manager, Engineer, or Intern?',
+            message: 'Is the team member a Manager, Engineer, or Intern?',
             name: 'role',
-            choices: ['Employee', 'Manager', 'Engineer', 'Intern'],
+            choices: ['Manager', 'Engineer', 'Intern'],
         }
-
-
-
-
-
-
     ])
 
+  .then((data) => {
+    const witchRole = (data) => {
+        switch (data){
+            case 'Manager':
+                return inquirer
+                .prompt([
+                    {
+                    type: 'input',
+                    name: 'managerName',
+                    message: 'Name of manager:',
+                    },
+
+                    {
+                    type: 'input',
+                    name: 'managerID',
+                    message: 'Employee ID of manager:',
+                    },
+
+                    {
+                    type: 'input',
+                    name: 'managerEmail',
+                    message: 'Email of manager:',
+                    },
+
+                     {
+                    type: 'input',
+                    name: 'managerOfficeNumber',
+                    message: 'Office number of manager:',
+                    },
+                ]);
+            
+             case 'Engineer':
+                return inquirer
+                .prompt([
+                    {
+                    type: 'input',
+                    name: 'name',
+                    message: 'Name of manager:',
+                    }]);
+
+
+
+
+  }
+
+
+    }
+
+
+
+
+
+  }
+
+
+
+
+  )
 
 
 
