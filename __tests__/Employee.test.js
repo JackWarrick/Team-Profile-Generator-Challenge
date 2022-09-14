@@ -3,8 +3,16 @@ const Employee = require('../lib/Employee');
 
 test('validate objects', () => {
     // An employee object - its going to have a name, an ID, an email - all should be keys
-    const employee = new Employee ('Jack'); // 'Jack', 24, 'testemail@email.com'
+    const employee = new Employee ('Jack', 27, "email@email.com"); // 'Jack', 24, 'testemail@email.com'
     expect(employee.name).toEqual(expect.any(String));
+    expect(employee.id).toEqual(expect.any(Number));
+    expect(employee.email).toEqual(expect.any(String));
+
+
+    expect(employee.getName()).toEqual(expect.any(String));
+    expect(employee.getId()).toEqual(expect.any(Number));
+    expect(employee.getEmail()).toEqual(expect.any(String));
+    expect(employee.getRole()).toEqual("Employee");
 
 
 })
