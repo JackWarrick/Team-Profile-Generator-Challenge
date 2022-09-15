@@ -41,19 +41,19 @@ This application is covered under the MIT License.
 
 **Screenshot of test success:**
 
-![Screenshot of test success](Coding-Challenges/Team-Profile-Generator-Challenge/assets/Test-Success.png)
+![Screenshot of test success](assets/Test-Success.png)
 
 -----
 
 **Screenshot of employee info in console:**
 
-![Screenshot of employee info console log](Coding-Challenges/Team-Profile-Generator-Challenge/assets/Employee-Info-Console.png)
+![Screenshot of employee info console log](assets/Employee-Info-Console.png)
 
 -----
 
 **Screenshot of created page:**
 
-![Screenshot of created page](Coding-Challenges/Team-Profile-Generator-Challenge/assets/Team-Page-Screenshot.png)
+![Screenshot of created page](assets/Team-Page-Screenshot.png)
 
 -----
 
