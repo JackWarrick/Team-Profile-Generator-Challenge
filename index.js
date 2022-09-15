@@ -1,16 +1,16 @@
 //Include inquirer and fs for running inquirer and creating html and css
-
 const inquirer = require('inquirer');
 const fs = require('fs');
 
 //Include all of the constructors we will use to hold variables
-
+const Employee = require('../Team-Profile-Generator-Challenge/lib/Employee');
 const Manager = require('../Team-Profile-Generator-Challenge/lib/Manager'); // manager has name, id, email, officenumber
 const Intern = require('../Team-Profile-Generator-Challenge/lib/Intern'); // intern has name, id, email, school
 const Engineer = require('../Team-Profile-Generator-Challenge/lib/Engineer'); // engineer has name, id, email, githubuser
 
 const team = [];
 
+//Questions for manager creation flow
 const managerQuestions = [
 
     {
@@ -36,112 +36,70 @@ const managerQuestions = [
 
 ];
 
+//Questions for engineer flow
+const engineerQuestions = [
+    {
+        type: 'input',
+        name: 'engineerName',
+        message: 'Name of engineer:',
+        },
 
-const init = () => {
-    inquirer.prompt(managerQuestions).then((answer) => {
-        const manager = new Manager(answer.managerName, answer.managerID, answer.managerEmail, answer.managerOfficeNumber)
-        console.log(manager);
-        team.push(manager);
-    }); 
-
-    
-        
-};
-
-init();
-
-
-
-
-// Create second prompt to see which role we are working with
-const WhichRole = inquirer
-    .prompt([
         {
-            type: 'list',
-            message: 'Would you like to add another team member? (select an option)',
-            name: 'role',
-            choices: ['Engineer', 'Intern', 'NO'],
-        }
-    ])
+        type: 'number',
+        name: 'engineerID',
+        message: 'Employee ID of engineer:',
+        },
 
-    //feed the answer into this function to 
+        {
+        type: 'input',
+        name: 'engineerEmail',
+        message: 'Email of engineer:',
+        },
 
-  .then((data) => {
-    const otherRole = (data) => {
-        switch (data){
-            case 'Engineer':
-                return inquirer
-                .prompt([
-                    {
-                    type: 'input',
-                    name: 'engineerName',
-                    message: 'Name of engineer:',
-                    },
+         {
+        type: 'input',
+        name: 'engineerGithub',
+        message: 'GitHub username of engineer:',
+        },
+];
 
-                    {
-                    type: 'number',
-                    name: 'engineerID',
-                    message: 'Employee ID of engineer:',
-                    },
+//Questions for intern flow
+const internQuestions = [
+    {
+        type: 'input',
+        name: 'internName',
+        message: 'Name of intern:',
+        },
+        {
+        type: 'number',
+        name: 'internID',
+        message: 'Employee ID of intern:',
+        },
+        {
+        type: 'input',
+        name: 'internEmail',
+        message: 'Email of intern:',
+        },
+        {
+        type: 'input',
+        name: 'internSchool',
+        message: 'School of intern:',
+        },
 
-                    {
-                    type: 'input',
-                    name: 'engineerEmail',
-                    message: 'Email of engineer:',
-                    },
+];
 
-                     {
-                    type: 'input',
-                    name: 'engineerGithub',
-                    message: 'GitHub username of engineer:',
-                    },
+//Questions to decide what role we are creating after manager
+const whichRoleQuestion = [
+    {
+        type: 'list',
+        message: 'Would you like to add another team member? (select an option)',
+        name: 'role',
+        choices: ['Engineer', 'Intern', 'NO'],
+    }
 
-                    
-                ]);
-            
-             case 'Intern':
-                return inquirer
-                .prompt([
-                    {
-                    type: 'input',
-                    name: 'internName',
-                    message: 'Name of intern:',
-                    },
-                    {
-                    type: 'number',
-                    name: 'internID',
-                    message: 'Employee ID of intern:',
-                    },
-                    {
-                    type: 'input',
-                    name: 'internEmail',
-                    message: 'Email of intern:',
-                    },
-                    {
-                    type: 'input',
-                    name: 'internSchool',
-                    message: 'School of intern:',
-                    },
-]);
+];
 
-case 'NO':
-    return 
-   ;
-
-   
-
-}}});
-
-//I want to use these switch statements to fill an object like we did for the manager and then I need to write a file to push each new created team member to the html file
-//I also need to make sure the manager function runs first and then the switch statement that selects either engineer intern or NO
-
-const engineer = new Engineer(data.engineerName, data.engineerID, data.engineerEmail, data.engineerGithub);
-team.push(engineer);
-const intern = new Intern(data.internName, data.internID, data.internEmail, data.internSchool);
-team.push(intern);
-
-
-//may need to have a const HTML to include everything that will be in the HTML
+//The content for the HTML file with added user input
 const HTML = `
 <!DOCTYPE html>
 <html lang="en">
@@ -175,14 +133,19 @@ const HTML = `
 
     <div> 
 
+    ${team.map((employee) => `
     <div class="card" style="width: 20rem;">
         <div class="card-body">
-        <h4 class="card-title">${answer.managerName}</h4>
-        <p class="card-text">${answer.managerID}</p>
-        <p class="card-text">${answer.managerEmail}</p>
-        <p class="card-text">${answer.managerOfficeNumber}</p>
-        </div>
-    </div>
+            <h2 class = "card-title">${employee.getRole()}</h2>
+            <h3 class = "card-title">${employee.name}<h3>
+            <p class = "card-text">${employee.id} </p>
+            <p class = "card-text">${employee.email} </p>
+            <p class = "card-text">${employee?.officeNumber} </p>
+            <p class = "card-text">${employee?.github} </p>
+            <p class = "card-text">${employee?.school} </p>
+            </div>
+            </div>
+            `).join('')}
 
     </div>
 
@@ -192,9 +155,50 @@ const HTML = `
 
 `
 
+//First function to create data for Manager
+const managerFunction = () => {
+    inquirer.prompt(managerQuestions).then((answer) => {
+        const manager = new Manager(answer.managerName, answer.managerID, answer.managerEmail, answer.managerOfficeNumber)
+        console.log(manager);
+        team.push(manager);
+        otherRoleFunction();
+        //Go to OtherRoleFunction after this function runs
+    });
 
+}
 
-//How to I put the index.html in the dist/ folder with the style.css?
-fs.writeFile('index.html', HTML, (err) =>
+//Function for adding another role after manager
+ const otherRoleFunction = () =>  {
+    inquirer.prompt(whichRoleQuestion).then((data) => {
+        if (data.role === 'Engineer'){
+            inquirer.prompt(engineerQuestions).then((data1) => {
+            const engineer = new Engineer(data1.engineerName, data1.engineerID, data1.engineerEmail, data1.engineerGithub);
+            console.log(engineer);
+            team.push(engineer);
+            otherRoleFunction();
+            //Back to start
+            } 
+        
+    )} else if (data.role === 'Intern'){
+            inquirer.prompt(internQuestions).then((data2) => {
+            const intern = new Intern(data2.internName, data2.internID, data2.internEmail, data2.internSchool);
+            console.log(intern);
+            team.push(intern);
+            otherRoleFunction();
+            //Back to start
+            }
+            
+            
+    )} else {
+
+        //Write the function if user selects NO
+        writeFileFunction();
+    }})};
+
+//Function for writing the html file
+const writeFileFunction = () => {fs.writeFile('index.html', HTML, (err) =>
    err ? console.log(err) : console.log('Success!')
-    ); 
+    ); };
+
+//Call the starter function
+managerFunction();
